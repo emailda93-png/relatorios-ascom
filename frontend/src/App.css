@@ -1,0 +1,83 @@
+/* Additional component styles */
+.btn-primary {
+  @apply bg-black text-white px-6 py-3 font-medium uppercase tracking-wide text-sm;
+  @apply hover:bg-gray-800 transition-colors duration-200;
+}
+
+.btn-secondary {
+  @apply bg-white text-black border border-black px-6 py-3 font-medium uppercase tracking-wide text-sm;
+  @apply hover:bg-gray-100 transition-colors duration-200;
+}
+
+.btn-ghost {
+  @apply bg-transparent text-black px-4 py-2;
+  @apply hover:bg-gray-100 transition-colors duration-200;
+}
+
+.input-field {
+  @apply w-full border-b-2 border-gray-200 bg-transparent px-0 py-3;
+  @apply focus:border-black transition-all duration-200;
+  @apply placeholder:text-gray-400;
+}
+
+.textarea-field {
+  @apply w-full border-2 border-gray-200 bg-transparent p-4;
+  @apply focus:border-black transition-all duration-200;
+  @apply placeholder:text-gray-400 resize-none;
+}
+
+.card {
+  @apply bg-white border border-gray-200 p-6;
+  @apply hover:border-black transition-colors duration-200;
+}
+
+.label {
+  @apply text-xs font-bold uppercase tracking-widest text-gray-900 mb-2 block;
+}
+
+.table-header {
+  @apply border-b-2 border-black text-black font-bold uppercase text-xs tracking-wider pb-3;
+}
+
+.table-row {
+  @apply border-b border-gray-100 hover:bg-gray-50 transition-colors duration-200;
+}
+
+/* Modal overlay */
+.modal-overlay {
+  @apply fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.modal-content {
+  @apply bg-white border-2 border-black p-8 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto;
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Preview styles */
+.preview-container {
+  @apply bg-white border-2 border-black p-8;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+.preview-header {
+  @apply text-center border-b-2 border-black pb-6 mb-6;
+}
+
+.preview-section {
+  @apply mb-6;
+}
+
+.preview-section-title {
+  @apply font-bold text-sm uppercase tracking-wider mb-2 border-b border-gray-300 pb-1;
+}
+
+/* File upload */
+.file-upload {
+  @apply border-2 border-dashed border-gray-300 p-8 text-center cursor-pointer;
+  @apply hover:border-black transition-colors duration-200;
+}
+
+.file-upload.has-file {
+  @apply border-black bg-gray-50;
+}
