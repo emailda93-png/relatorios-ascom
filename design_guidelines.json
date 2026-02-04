@@ -1,0 +1,136 @@
+{
+  "identity": {
+    "name": "E1 - The Government Archivist",
+    "tone": "Authoritative, Minimalist, Precision-Oriented, Bureaucratic (Positive)",
+    "description": "A system that values clarity over decoration. Every pixel serves the data. The design is stark, relying on whitespace, typography, and structure to convey hierarchy.",
+    "emotional_archetype": "ARCHETYPE 4: SWISS & HIGH-CONTRAST (Authority, Clarity, Truth)"
+  },
+  "typography": {
+    "font_family": {
+      "headings": "Merriweather, serif",
+      "body": "Public Sans, sans-serif",
+      "mono": "JetBrains Mono, monospace"
+    },
+    "scale": {
+      "h1": "text-4xl font-bold tracking-tight",
+      "h2": "text-3xl font-semibold tracking-tight",
+      "h3": "text-2xl font-semibold",
+      "p": "text-base leading-relaxed text-gray-800",
+      "small": "text-sm text-gray-500",
+      "label": "text-xs font-bold uppercase tracking-widest text-gray-900"
+    },
+    "rules": [
+      "Headings MUST utilize Merriweather for that 'Official Document' aesthetic.",
+      "Body text should use Public Sans for high legibility on screens.",
+      "Data values (dates, IDs) should use JetBrains Mono for precision.",
+      "NEVER use gradients on text.",
+      "Use uppercase with wide tracking (tracking-widest) for labels and table headers."
+    ]
+  },
+  "colors": {
+    "palette": {
+      "primary": "#000000",
+      "secondary": "#ffffff",
+      "accent": "#000000",
+      "background": "#ffffff",
+      "surface": "#f9fafb",
+      "border": "#e5e7eb",
+      "text": {
+        "primary": "#111827",
+        "secondary": "#4b5563",
+        "muted": "#9ca3af"
+      },
+      "status": {
+        "success": "#000000",
+        "error": "#000000",
+        "warning": "#000000"
+      }
+    },
+    "guidelines": [
+      "STRICT MONOCHROME: No colors allowed.",
+      "Use patterns (stripes, dots) or borders to distinguish states if needed, not color.",
+      "Error states: Use thick black borders and bold text, not red.",
+      "Success states: Use black background with white text.",
+      "Backgrounds: Pure white (#ffffff) for papers/cards, very light gray (#f9fafb) for the app background."
+    ]
+  },
+  "layout": {
+    "spacing_scale": "Generous (p-6, p-8, p-12)",
+    "grid_system": "Bento Grid Mode B (High Density)",
+    "container_style": "Sharp edges, 1px solid borders, no shadows (flat design).",
+    "dashboard_structure": {
+      "sidebar": "Fixed width (250px), border-r border-gray-200, white bg.",
+      "main": "p-8 bg-gray-50 text-gray-900",
+      "card": "bg-white border border-gray-200 p-6 shadow-none hover:border-black transition-colors duration-200"
+    }
+  },
+  "components": {
+    "style": "Brutalist / Swiss",
+    "radius": "rounded-none",
+    "shadows": "none",
+    "buttons": {
+      "primary": "bg-black text-white hover:bg-gray-800 rounded-none px-6 py-3 font-medium uppercase tracking-wide text-sm",
+      "secondary": "bg-white text-black border border-black hover:bg-gray-100 rounded-none px-6 py-3 font-medium uppercase tracking-wide text-sm",
+      "ghost": "bg-transparent text-black hover:bg-gray-100 rounded-none"
+    },
+    "inputs": {
+      "style": "border-b-2 border-gray-200 focus:border-black bg-transparent px-0 py-2 outline-none rounded-none transition-all placeholder:text-gray-400",
+      "label_position": "top"
+    },
+    "cards": {
+      "style": "border border-gray-200 bg-white p-6 rounded-none"
+    },
+    "tables": {
+      "header": "border-b-2 border-black text-black font-bold uppercase text-xs tracking-wider pb-3",
+      "row": "border-b border-gray-100 hover:bg-gray-50 transition-colors"
+    }
+  },
+  "assets": {
+    "image_urls": {
+      "logo_brasao": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Bras%C3%A3o_de_Cana%C3%A3_dos_Caraj%C3%A1s_-_PA.svg/640px-Bras%C3%A3o_de_Cana%C3%A3_dos_Caraj%C3%A1s_-_PA.svg.png",
+      "login_bg": "https://images.unsplash.com/photo-1653583666522-9de39986fcb6?crop=entropy&cs=srgb&fm=jpg&q=85",
+      "placeholder_avatar": "https://ui-avatars.com/api/?name=Admin&background=000000&color=fff"
+    },
+    "icons": {
+      "library": "lucide-react",
+      "style": "Stroke width 1.5px or 2px, strictly black."
+    }
+  },
+  "pdf_export": {
+    "layout": "A4 Portrait",
+    "header": {
+      "logo_position": "Top Left (or Center)",
+      "title": "Relatório de Produção de: [Month/Year]",
+      "details": [
+        "Nome: Gustavo Ferreira Santos",
+        "Cargo: Assessor Especial 3",
+        "Secretária: Sheila Cristina",
+        "Org: Prefeitura Municipal de Canaã dos Carajás"
+      ]
+    },
+    "styles": {
+      "font": "Times New Roman or Merriweather for print.",
+      "margins": "2.5cm all sides",
+      "footer": "Page numbers centered."
+    }
+  },
+  "instructions_to_main_agent": [
+    "INSTALLATION: Run 'npm install lucide-react clsx tailwind-merge date-fns @react-pdf/renderer' immediately.",
+    "THEME: Force Light Mode. Remove any dark mode toggles. This is a government tool.",
+    "COMPONENTS: Customize Shadcn UI to remove all 'rounded-md' classes. Make everything 'rounded-none' or 'rounded-sm'.",
+    "PDF: Use '@react-pdf/renderer' for generating the PDF. It allows React-based PDF creation.",
+    "DATA: Mock the database for now if needed, but the prompt mentions MongoDB. Ensure the frontend connects to FastAPI.",
+    "SEARCH: Implement a client-side filter for the dashboard for instant feedback.",
+    "TESTING: Add 'data-testid' to all form inputs (e.g., 'input-demanda', 'input-solicitacao').",
+    "CRITICAL: The UI must be boringly efficient. No fancy flying animations. Just fast micro-interactions."
+  ],
+  "universal_guidelines": [
+    "Do not use generic centered layouts.",
+    "Create depth through borders and whitespace, not shadows.",
+    "Use 2-3x more spacing than feels comfortable.",
+    "Every interaction needs micro-animations (fade, color swap) - no movement.",
+    "Use 'sonner' for toasts.",
+    "Export components as named exports.",
+    "Use proper HTTP status codes in backend."
+  ]
+}
