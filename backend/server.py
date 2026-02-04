@@ -40,7 +40,8 @@ reports_collection = db["reports"]
 
 class ReportBase(BaseModel):
     demanda: str
-    solicitacao: str
+    solicitante: Optional[str] = None  # Quem pediu
+    secretaria: Optional[str] = None   # Para onde foi feito
     data: str
     image_data: Optional[str] = None
 
@@ -48,7 +49,8 @@ class ReportBase(BaseModel):
 class ReportResponse(BaseModel):
     id: str
     demanda: str
-    solicitacao: str
+    solicitante: Optional[str] = None
+    secretaria: Optional[str] = None
     data: str
     has_image: bool
     created_at: str
@@ -56,7 +58,8 @@ class ReportResponse(BaseModel):
 
 class ReportUpdate(BaseModel):
     demanda: Optional[str] = None
-    solicitacao: Optional[str] = None
+    solicitante: Optional[str] = None
+    secretaria: Optional[str] = None
     data: Optional[str] = None
     image_data: Optional[str] = None
     remove_image: Optional[bool] = False
@@ -70,8 +73,9 @@ async def health_check():
 @app.post("/api/reports", response_model=ReportResponse)
 async def create_report(
     demanda: str = Form(...),
-    solicitacao: str = Form(...),
     data: str = Form(...),
+    solicitante: Optional[str] = Form(None),
+    secretaria: Optional[str] = Form(None),
     image: Optional[UploadFile] = File(None)
 ):
     image_data = None
@@ -81,7 +85,8 @@ async def create_report(
     
     report_doc = {
         "demanda": demanda,
-        "solicitacao": solicitacao,
+        "solicitante": solicitante or None,
+        "secretaria": secretaria or None,
         "data": data,
         "image_data": image_data,
         "created_at": datetime.now(timezone.utc).isoformat()
@@ -92,7 +97,8 @@ async def create_report(
     return ReportResponse(
         id=str(result.inserted_id),
         demanda=demanda,
-        solicitacao=solicitacao,
+        solicitante=solicitante,
+        secretaria=secretaria,
         data=data,
         has_image=image_data is not None,
         created_at=report_doc["created_at"]
@@ -100,16 +106,27 @@ async def create_report(
 
 
 @app.get("/api/reports", response_model=List[ReportResponse])
-async def get_reports(search: Optional[str] = None):
+async def get_reports(search: Optional[str] = None, month: Optional[str] = None, year: Optional[str] = None):
     query = {}
+    conditions = []
+    
     if search:
-        query = {
+        conditions.append({
             "$or": [
-                {"solicitacao": {"$regex": search, "$options": "i"}},
+                {"solicitante": {"$regex": search, "$options": "i"}},
+                {"secretaria": {"$regex": search, "$options": "i"}},
                 {"data": {"$regex": search, "$options": "i"}},
                 {"demanda": {"$regex": search, "$options": "i"}}
             ]
-        }
+        })
+    
+    # Filter by month/year (format: DD/MM/YYYY)
+    if month and year:
+        date_pattern = f"/{month.zfill(2)}/{year}"
+        conditions.append({"data": {"$regex": date_pattern}})
+    
+    if conditions:
+        query = {"$and": conditions} if len(conditions) > 1 else conditions[0]
     
     cursor = reports_collection.find(query).sort("created_at", -1)
     reports = []
@@ -118,7 +135,8 @@ async def get_reports(search: Optional[str] = None):
         reports.append(ReportResponse(
             id=str(doc["_id"]),
             demanda=doc["demanda"],
-            solicitacao=doc["solicitacao"],
+            solicitante=doc.get("solicitante"),
+            secretaria=doc.get("secretaria"),
             data=doc["data"],
             has_image=doc.get("image_data") is not None,
             created_at=doc.get("created_at", "")
@@ -140,7 +158,8 @@ async def get_report(report_id: str):
     return {
         "id": str(doc["_id"]),
         "demanda": doc["demanda"],
-        "solicitacao": doc["solicitacao"],
+        "solicitante": doc.get("solicitante"),
+        "secretaria": doc.get("secretaria"),
         "data": doc["data"],
         "image_data": doc.get("image_data"),
         "has_image": doc.get("image_data") is not None,
@@ -152,7 +171,8 @@ async def get_report(report_id: str):
 async def update_report(
     report_id: str,
     demanda: Optional[str] = Form(None),
-    solicitacao: Optional[str] = Form(None),
+    solicitante: Optional[str] = Form(None),
+    secretaria: Optional[str] = Form(None),
     data: Optional[str] = Form(None),
     image: Optional[UploadFile] = File(None),
     remove_image: Optional[str] = Form(None)
@@ -168,8 +188,10 @@ async def update_report(
     update_data = {}
     if demanda is not None:
         update_data["demanda"] = demanda
-    if solicitacao is not None:
-        update_data["solicitacao"] = solicitacao
+    if solicitante is not None:
+        update_data["solicitante"] = solicitante if solicitante else None
+    if secretaria is not None:
+        update_data["secretaria"] = secretaria if secretaria else None
     if data is not None:
         update_data["data"] = data
     
@@ -190,7 +212,8 @@ async def update_report(
     return ReportResponse(
         id=str(updated["_id"]),
         demanda=updated["demanda"],
-        solicitacao=updated["solicitacao"],
+        solicitante=updated.get("solicitante"),
+        secretaria=updated.get("secretaria"),
         data=updated["data"],
         has_image=updated.get("image_data") is not None,
         created_at=updated.get("created_at", "")
